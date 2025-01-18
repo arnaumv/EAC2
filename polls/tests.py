@@ -1,8 +1,7 @@
 from django.test import TestCase
-
-from django.test import TestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.firefox.webdriver import WebDriver
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -14,7 +13,9 @@ class PollsSeleniumTests(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.selenium = WebDriver()
+        options = Options()
+        options.headless = True  # Modo headless activado para CI/CD
+        cls.selenium = WebDriver(options=options)
         cls.selenium.implicitly_wait(10)
         
         # Crear superusuario para pruebas
