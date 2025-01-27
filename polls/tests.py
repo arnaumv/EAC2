@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.firefox.webdriver import WebDriver
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -12,7 +13,15 @@ class PollsSeleniumTests(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.selenium = WebDriver()
+
+        # Configuración del navegador en modo headless
+        options = Options()
+        options.add_argument("--headless")  # Modo headless
+        options.add_argument("--disable-gpu")  # Desactiva la GPU, útil para entorno CI
+        options.add_argument("--no-sandbox")  # Evita problemas con el contenedor de CI
+        
+        # Iniciar el WebDriver con las opciones
+        cls.selenium = WebDriver(options=options)
         cls.selenium.implicitly_wait(10)
 
         # Crear superusuario para pruebas
